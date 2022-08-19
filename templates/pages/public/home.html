@@ -1,0 +1,30 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ site_title }}{% endblock %}
+
+{% block content %}
+<h1>{{ site_title }}</h1>
+
+<div class="pb-4"></div>
+
+<h3 class="mb-3">コントロールパネルにアクセス</h3>
+<p>システムステータスを確認したりアクションを実行するには、右上のボタンからログインしてください。<br>
+  ※アカウントの作成はDjangoの管理コマンドまたは管理サイトから行うことができます。</p>
+<h3 class="mb-3">ヘルプ</h3>
+<h5>使い方を調べるには</h5>
+<p>サイトを使用する上で分からない点があれば、<a href="https://github.com/bigbamboo-jp/remote-connection-manager-ja" class="card-link" target="_blank" rel="noopener noreferrer">開発プロジェクトのページ</a>をご覧ください。</p>
+<h5>問題を解決するには</h5>
+<p>何か問題が発生した場合はサイトの管理者に連絡してください。<br>
+  管理者はこのサイトについての完全な権限を持っているため、ほとんどの問題に対処することができます。</p>
+
+<div class="pb-4"></div>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">このサイトはオープンソースです！</h5>
+    <p class="card-text">誰でもこのサイトのソースコードを使って新しいサイトを立ち上げることができます。<br>
+      詳しくは以下のプロジェクトページをご覧ください。</p>
+    <a href="https://github.com/bigbamboo-jp/remote-connection-manager-ja" class="card-link" target="_blank" rel="noopener noreferrer">GitHub｜remote-connection-manager-ja</a>
+  </div>
+</div>
+{% endblock content %}

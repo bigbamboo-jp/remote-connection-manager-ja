@@ -1,125 +1,53 @@
-> A batteries-included Django starter project. To learn more try the books [Django for Beginners](https://djangoforbeginners.com), [Django for APIs](https://djangoforapis.com), and [Django for Professionals](https://djangoforprofessionals.com).
+# リモート接続マネージャー
+より安全、より便利にリモートホストにSSHで接続するためのウェブアプリ。
 
-## 🚀 Features
+<img src="homepage.png" width="1080">
 
-- Django 4.0 & Python 3.10
-- Install via [Pip](https://pypi.org/project/pip/), [Pipenv](https://pypi.org/project/pipenv/), or [Docker](https://www.docker.com/)
-- User log in/out, sign up, password reset via [django-allauth](https://github.com/pennersr/django-allauth)
-- Static files configured with [Whitenoise](http://whitenoise.evans.io/en/stable/index.html)
-- Styling with [Bootstrap v4](https://github.com/twbs/bootstrap)
-- Debugging with [django-debug-toolbar](https://github.com/jazzband/django-debug-toolbar)
-- DRY forms with [django-crispy-forms](https://github.com/django-crispy-forms/django-crispy-forms)
-
-![Homepage](homepage.png)
-----
-
-## Table of Contents
-* **[Installation](#installation)**
-  * [Pip](#pip)
-  * [Pipenv](#pipenv)
-  * [Docker](#docker)
-* [Next Steps](#next-steps)
-* [Contributing](#contributing)
-* [Support](#support)
-* [License](#license)
-
-----
-
-## 📖 Installation
-DjangoX can be installed via Pip, Pipenv, or Docker. To start, clone the repo to your local computer and change into the proper directory.
-
-```
-$ git clone https://github.com/wsvincent/djangox.git
-$ cd djangox
-```
-
-### Pip
-
-```
-$ python -m venv .venv
-
-# Windows
-$ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-$ .venv\Scripts\Activate.ps1
-
-# macOS
-$ source djangox/bin/activate
-
-(.venv) $ pip install -r requirements.txt
-(.venv) $ python manage.py migrate
-(.venv) $ python manage.py createsuperuser
-(.venv) $ python manage.py runserver
-# Load the site at http://127.0.0.1:8000
-```
-
-### Pipenv
-
-```
-$ pipenv install
-$ pipenv shell
-(.venv) $ python manage.py migrate
-(.venv) $ python manage.py createsuperuser
-(.venv) $ python manage.py runserver
-# Load the site at http://127.0.0.1:8000
-```
-
-### Docker
-
-To use Docker with PostgreSQL as the database update the `DATABASES` section of `django_project/settings.py` to reflect the following:
-
-```python
-# django_project/settings.py
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
-        "PORT": 5432,  # default postgres port
-    }
-}
-```
-
-The `INTERNAL_IPS` configuration in `django_project/settings.py` must be also be updated:
-
-```python
-# config/settings.py
-# django-debug-toolbar
-import socket
-hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
-```
-
-And then proceed to build the Docker image, run the container, and execute the standard commands within Docker.
-
-```
-$ docker-compose up -d --build
-$ docker-compose exec web python manage.py migrate
-$ docker-compose exec web python manage.py createsuperuser
-# Load the site at http://127.0.0.1:8000
-```
-
-## Next Steps
-
-- Add environment variables. There are multiple packages but I personally prefer [environs](https://pypi.org/project/environs/).
-- Add [gunicorn](https://pypi.org/project/gunicorn/) as the production web server.
-- Update the [EMAIL_BACKEND](https://docs.djangoproject.com/en/4.0/topics/email/#module-django.core.mail) and connect with a mail provider.
-- Make the [admin more secure](https://opensource.com/article/18/1/10-tips-making-django-admin-more-secure).
-- `django-allauth` supports [social authentication](https://django-allauth.readthedocs.io/en/latest/providers.html) if you need that.
-
-I cover all of these steps in my three books: [Django for Beginners](https://djangoforbeginners.com), [Django for APIs](https://djangoforapis.com), and [Django for Professionals](https://djangoforprofessionals.com).
-
-----
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome! See [CONTRIBUTING.md](https://github.com/wsvincent/djangox/blob/master/CONTRIBUTING.md).
-
-## ⭐️ Support
-
-Give a ⭐️  if this project helped you!
-
-## License
-
-[The MIT License](LICENSE)
+## アプリケーションの種類について
+リモート接続マネージャーはPythonで実装されたWebアプリケーションフレームワークのDjangoで開発されたウェブアプリです。  
+プログラムファイルをダウンロードして任意のサーバーで実行するだけで、インターネットやローカルネットワーク上で簡単にウェブ技術をベースにしたサービスを立ち上げることができます。
+## このアプリケーションでできること
+- リモートホストのシステムステータスを確認する
+- リモートホストのSSHサービスのステータス・設定を確認する
+- リモートホストのSSHサービスを起動・停止させる
+- 指定した期間だけリモートホストのSSHサービスを実行する
+## 使い始める
+**動作環境：Linux OS（Debian系・Red Hat系に対応）、OpenSSHサーバーコンポーネント・Python 3.10以上がインストール済み**
+1. 下のリンクから最新のプログラムをダウンロードしてそれを解凍してください。  
+[https://github.com/bigbamboo-jp/remote-connection-manager-ja/releases](https://github.com/bigbamboo-jp/remote-connection-manager-ja/releases)
+1. アプリケーションのルートディレクトリ（`superuser_module.py`があるディレクトリ）で以下のコマンドを実行してください。  
+※`superuser_module.py`はアプリケーション上でroot権限が必要なコマンドを実行するためのモジュールです。
+    ```
+    sudo python3 superuser_module.py standby
+    ```
+1. アプリケーションのルートディレクトリで**手順2とは別のGNOME端末を使って**以下のコマンドを実行してください。
+    ```
+    python3 -m venv .venv
+    source djangox/bin/activate
+    ```
+1. プロンプトの前に`(.venv)`が表示されていることを確認して、以下のコマンドを実行してください。
+    ```
+    (.venv) $ pip install -r requirements.txt
+    (.venv) $ python3 manage.py migrate
+    (.venv) $ python3 manage.py createsuperuser
+    (.venv) $ python3 manage.py runserver
+    # Starting development server at http://127.0.0.1:8000/
+    ```
+1. ウェブブラウザで [http://127.0.0.1:8000/](http://127.0.0.1:8000/) にアクセスするとアプリケーションを使用できます。
+> ヒント：サイト名の変更などは管理サイト（[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)）で行うことができます。
+## セキュリティ対策
+このアプリケーションには実行するのにroot権限が必要な機能があり、それらの機能は拡張モジュール（`superuser_module.py`）と連携することによって実現されています。  
+その仕組み上、拡張モジュール及び拡張モジュールがアクセスするファイルに適切なセキュリティ対策を施す必要があります。  
+以下のファイルについては必ずファイル権限の設定を行ってください（rootユーザー以外は読み取り専用にすることを推奨）。
+- `simplemmap.py`
+- `superuser_module.py`
+- `system_connector.py`
+## 定期処理のスケジューリング
+このアプリケーションには定期的に行わなければいけない処理を記述したシェルスクリプト（`routine_processing.sh`）が付属しています。  
+システムによって定期処理が自動で行われるようにするには、プログラムファイルがあるディレクトリのパスを書き込んだシェルスクリプトをcronに登録してください。
+## 他言語への対応について
+現在、このプロジェクトはアプリケーション・ドキュメント共に日本語版のみ製作しています。  
+今後、時間ができたときに他言語版も製作して公開する予定です。
+## ライセンス
+このアプリケーションを開発する際に使用したテンプレートであるDjangoX（[https://github.com/wsvincent/djangox](https://github.com/wsvincent/djangox)）のライセンスは[LICENSE](LICENSE)を参照してください。  
+リモート接続マネージャー自体のライセンスは[REMOTE CONNECTION MANAGER LICENSE](REMOTE%20CONNECTION%20MANAGER%20LICENSE)を参照してください。

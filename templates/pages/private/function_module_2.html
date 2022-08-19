@@ -1,0 +1,145 @@
+<div class="card-deck">
+  {% if ssh_function_can_be_enabled == False and ssh_function_can_be_disabled == False %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">利用できるアクションがありません</h5>
+      <h6 class="card-text">アクションを利用するにはSSH接続が利用可能である必要があります。</h6>
+    </div>
+  </div>
+  {% endif %}
+  {% if ssh_function_can_be_enabled == True %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">SSH接続を今すぐ有効にする</h5>
+      <h6 class="card-text">今すぐSSH接続を有効にします。</h6>
+      <a href="#" class="btn btn-success mt-1" data-toggle="modal" data-target="#immediateActivationModal">有効にする</a>
+    </div>
+  </div>
+  {% endif %}
+  {% if ssh_function_can_be_disabled == True %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">SSH接続を今すぐ無効にする</h5>
+      <h6 class="card-text">今すぐSSH接続を無効にします。<br>この操作を行うと接続している端末は切断されます。</h6>
+      <a href="#" class="btn btn-danger mt-1" data-toggle="modal" data-target="#immediateDeactivationModal">無効にする</a>
+    </div>
+  </div>
+  {% if ssh_function_disable_reservation_is_filled == False %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">SSH接続を一定時間後に無効にする</h5>
+      <h6 class="card-text">一定時間後にSSH接続を無効にします。<br>スケジュールは登録されていません。</h6>
+      <a href="#" class="btn btn-success mt-1" data-toggle="modal" data-target="#activationScheduleRegistrationModal">スケジュールを登録する</a>
+    </div>
+  </div>
+  {% endif %}
+  {% if ssh_function_disable_reservation_is_filled == True %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">SSH接続を一定時間後に無効にする</h5>
+      <h6 class="card-text">一定時間後にSSH接続を無効にします。<br>{% if ssh_function_disable_reservation_waiting_time > 0 %}{{ ssh_function_disable_reservation_waiting_time }}時間後{% else %}1時間以内{% endif %}に実行されるスケジュールが登録されています。</h6>
+      <a href="#" class="btn btn-danger mt-1" data-toggle="modal" data-target="#activationScheduleUnregistrationModal">スケジュールを削除する</a>
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+
+<div class="modal fade" id="immediateActivationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form role="form" action="action/ssh_function/enable" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">操作の確認</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>本当にSSH接続を有効にしますか？</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
+          <button type="submit" class="btn btn-primary">はい</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="immediateDeactivationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form role="form" action="action/ssh_function/disable" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">操作の確認</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>本当にSSH接続を無効にしますか？</h6>
+          <h6 class="font-weight-bold mt-3">注意</h6>
+          <h6>この操作を行うと自動処理のスケジュール「一定時間後にSSH接続を無効にする」が削除されます。</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
+          <button type="submit" class="btn btn-primary">はい</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="activationScheduleRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form role="form" action="action/ssh_function_disable_reservation/register" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">自動処理のスケジュールを登録する</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>処理内容: SSH接続を一定時間後に無効にする</h6>
+          <h6>パラメータ [1]: 待機する時間</h6>
+          <div class="form-inline">
+            <input class="form-control" type="number" name="parameter-1" value="1.0" min="0.01" max="24.0" step="0.01" required>
+            <h6 class="ml-2" style="position: relative; top: 0.20rem;">時間</h6>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+          <button type="submit" class="btn btn-primary">OK</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="activationScheduleUnregistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form role="form" action="action/ssh_function_disable_reservation/unregister" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">操作の確認</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>本当に自動処理のスケジュールを削除しますか？</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
+          <button type="submit" class="btn btn-primary">はい</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div>
+  <h5>ステータス</h5>
+  <ul>
+    <li>ホストの電源：{% if host_power == 0 %}<span class="text-danger">オフ</span>{% else %}<span class="text-success">オン</span>{% endif %}</li>
+    <li>{{ site_title }}：{% if site_status == 0 %}<span>通常モード</span>{% else %}<span>デバッグモード</span>{% endif %}</li>
+    <li>SSH接続：{% if ssh_function == 0 %}<span class="text-secondary">利用不可</span>{% elif ssh_function == 1 %}<span class="text-danger">無効</span>{% elif ssh_function == 2 %}<span class="text-success">有効</span>{% endif %}</li>
+    <li>SSHセッション数：<span>{{ ssh_connection_count }}</span></li>
+  </ul>
+  <h5>設定情報</h5>
+  <ul>
+    <li>SSHホストのローカルIPアドレス：{% if local_ip_address is None %}<span>(取得できません)</span>{% else %}<span>{{ local_ip_address }}</span>{% endif %}</li>
+    <li>SSHホストのグローバルIPアドレス：{% if global_ip_address is None %}<span>(取得できません)</span>{% else %}<span>{{ global_ip_address }}</span>{% endif %}</li>
+    <li>SSH接続ポート：<span>{{ ssh_port }}</span></li>
+    <li>SSH最大同時接続数：<span>{{ ssh_max_simultaneous_connection_count }}</span></li>
+  </ul>
+</div>

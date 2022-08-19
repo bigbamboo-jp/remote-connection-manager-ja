@@ -1,0 +1,14 @@
+{% extends '_base.html' %}
+{% load pages_tags %}
+
+{% block title %}{{ site_title }}{% endblock title %}
+
+{% block content %}
+<h1 class="pb-1">コントロールパネル</h1>
+
+<h3 class="text-primary mt-4 mb-3">現在の状況<h3>
+{% current_system_status %}
+
+<h3 class="text-primary mt-4 mb-3">アクション<h3>
+{% possible_management_actions %}
+{% endblock content %}
